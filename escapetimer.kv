@@ -1,0 +1,18 @@
+<MainLayout>:
+    orientation: 'vertical'
+    BoxLayout:
+        size_hint_y: None
+        height: 200
+        Button:
+            id: start
+            text: 'Start CountDown'
+            font_size: 50
+            on_press: root.count_down()
+        Button:
+            id: add
+            text: 'add'
+            font_size: 50
+            on_press: root.add_time()
+    Label:
+        text: root.counter
+        font_size: 150
