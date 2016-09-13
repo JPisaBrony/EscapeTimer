@@ -3,9 +3,11 @@ from thread import *
 from multiprocessing import Process, Manager
 import ctypes
 import sys
+import os
 
 HOST = '127.0.0.1'
 PORT = int(sys.argv[1])
+sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)
 
 def clientThread(con, adr, c, id):
     print "Client ID: " + str(id)
@@ -31,16 +33,14 @@ def serverThread(c):
         conn, addr = s.accept()
         print "Connected by " + str(addr)
         c.append("")
-        p = Process(target=clientThread, args=(conn, addr, c, id))
-        p.start()
+        start_new_thread(clientThread, (conn, addr, c, id))
         id += 1
 
-man = Manager()
-cons = man.list()
-p = Process(target=serverThread, args=(cons,))
-p.start()
-
-while True:
-    cmd = raw_input("Connection: ")
-    cmd2 = raw_input("Message: ")
-    cons[int(cmd)] = cmd2
+if __name__ == '__main__':
+    man = Manager()
+    cons = man.list()
+    start_new_thread(serverThread, (cons,))
+    while True:
+        cmd = raw_input("Connection: ")
+        cmd2 = raw_input("Message: ")
+        cons[int(cmd)] = cmd2
