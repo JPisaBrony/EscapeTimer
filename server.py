@@ -36,11 +36,16 @@ def serverThread(c):
         start_new_thread(clientThread, (conn, addr, c, id))
         id += 1
 
-if __name__ == '__main__':
-    man = Manager()
-    cons = man.list()
+def main(cons):
+    #man = Manager()
+    #cons = man.list()
     start_new_thread(serverThread, (cons,))
-    while True:
-        cmd = raw_input("Connection: ")
-        cmd2 = raw_input("Message: ")
-        cons[int(cmd)] = cmd2
+
+#if __name__ == '__main__':
+    #man = Manager()
+    #cons = man.list()
+    #start_new_thread(serverThread, (cons,))
+    #while True:
+    #    cmd = raw_input("Connection: ")
+    #    cmd2 = raw_input("Message: ")
+    #    cons[int(cmd)] = cmd2
