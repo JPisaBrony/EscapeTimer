@@ -16,7 +16,7 @@ class Server():
             con.send(c[id])
             c[id] = ""
             data = con.recv(1024)
-            if not data: 
+            if not data:
                 break
             print str(adr) + " : " + data
         print "Closed connection " + str(adr)

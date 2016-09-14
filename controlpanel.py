@@ -1,11 +1,9 @@
+from server import Server
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from multiprocessing import Manager
-import server
 
 class Window(BoxLayout):
-    msg = []
-
     def startup(self, m):
 	    self.msg = m
 
@@ -20,7 +18,8 @@ class ControlPanel(App):
         w = Window()
         man = Manager()
         m = man.list()
-        server.main(m)
+        s = Server('127.0.0.1', 3000, m)
+        s.start()
         w.startup(m)
         return w
 

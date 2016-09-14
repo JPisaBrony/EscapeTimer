@@ -1,34 +1,18 @@
+from client import Client
 from kivy.app import App
 from kivy.uix.label import Label
 from kivy.properties import StringProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
-from multiprocessing import Process, Manager
-from thread import *
+from multiprocessing import Manager
 import time
 import socket
-
-class Connection():
-    def start(self, m):
-        m.append("")
-        HOST = '127.0.0.1'
-        PORT = int(3000)
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((HOST, PORT))
-        while True:
-            data = s.recv(1024)
-            if not data:
-                break
-            m[0] = data
-            s.send(data)
-        s.close()
 
 class Window(BoxLayout):
     countdown_timer = 60 * 1000
     counter = StringProperty("00:%02d" % (countdown_timer / 1000))
     started_time = 0
     state = 0
-    msg = []
     
     def startup(self, m):
         self.msg = m
@@ -62,10 +46,11 @@ class Window(BoxLayout):
 class TimerWindow(App):
     def build(self):
         w = Window()
-        c = Connection()
         man = Manager()
         m = man.list()
-        start_new_thread(c.start, (m,))
+        m.append("")
+        c = Client('127.0.0.1', 3000, m)
+        c.start()
         w.startup(m)
         return w
 
